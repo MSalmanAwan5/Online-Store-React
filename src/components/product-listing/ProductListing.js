@@ -48,7 +48,7 @@ class ProductListing extends React.Component
     fetchProducts = (currentPage)=>{
         // console.log(currentPage)
         const {loadProducts} = this.props;
-        var base_url = 'http://localhost:8000'
+        var base_url = 'https://msalman.pythonanywhere.com'
 
         var data = null
 
@@ -66,14 +66,14 @@ class ProductListing extends React.Component
             axios(`${base_url}/products/api/products/?page=${currentPage}`)
             .then(result=>{
                 data = result.data
-                this.setState({pagesCount:Math.ceil(data.count/5)},()=>{
+                console.log("pagesCount",data.results.length)
+                if(currentPage === 1){
+                    this.setState({pagesCount:Math.ceil(data.count/data.results.length)},()=>{
                     sessionStorage.setItem(`pagesCount`,this.state.pagesCount)
                     console.log("pagesCoutn",this.state.pagesCount)
-                    loadProducts(data.results)
-                
+                    })
                 }
-                    )
-                
+                loadProducts(data.results)
                
                 try{
 
