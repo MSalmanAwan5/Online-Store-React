@@ -17,8 +17,7 @@ class ProductsDetailsModal extends Component{
    
     render(){
         const {product, cart, addToCart, removeFromCart, removeAllFromCart} = this.props
-        const cartItem = cart.filter((cartItem)=>cartItem.id===product.id)[0]
-        console.log(product)
+        const cartItem = cart.filter((cartItem)=>cartItem.id === product.id)[0]
         
         return (
             <Container>
@@ -95,7 +94,7 @@ function mapStateToProps(state, ownProps){
     console.log("id",ownProps.match.params.id)
     console.log("products",state.products)
     const product = state.products.filter((prod) => prod.id.toString() === `${ownProps.match.params.id}`)[0]
-    // console.log("product",product)
+    console.log("product",product)
     // console.log(typeof(ownProps.match.params.id))
     return{
         cart:state.cart,
