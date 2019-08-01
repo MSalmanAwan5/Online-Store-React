@@ -11,15 +11,39 @@ class ProductsDetailsModal extends Component{
 
     constructor(props) {
         super(props);
+        this.state={
+            loading:true,
+            product:null,
+        }
+        // this.fetchProduct = this.fetchProduct.bind(this);
     }
-    
-    
-   
-    render(){
-        const {product, cart, addToCart, removeFromCart, removeAllFromCart} = this.props
-        const cartItem = cart.filter((cartItem)=>cartItem.id === product.id)[0]
+    async componentDidMount()
+    {
+        console.log("workin")
+        const base_url="https://msalman.pythonanywhere.com"
+        axios(`${base_url}/products/api/products/${this.props.id}`)
+        .then(result=>{
+            var data = result.data
+            this.setState({loading:false,product:data})
+        }
+        )
         
-        return (
+
+    }
+    // fetchProduct(id)
+    // {
+        
+    // }
+    render(){
+        const {cart, addToCart, removeFromCart, removeAllFromCart} = this.props
+        const {loading,product} = this.state
+        
+        // return null
+        console.log(loading)
+        console.log(product)
+        if(!loading){
+            const cartItem = cart.filter((cartItem)=>cartItem.id === product.id)[0]
+            return(    
             <Container>
                 <Row>
                     <Col sm='6'>
@@ -77,29 +101,36 @@ class ProductsDetailsModal extends Component{
                                 </NavLink>
                                 </ButtonGroup>
                            
-                        </Card>
-                        
-                            
-                         
-                            : null}
+                        </Card> 
+                        : null}
                 </Col>
                 </Row>
             </Container>
-        )
-    }
+            )}
+        else{
+            return null
+        }
+}
 }
 
+// function fetchProduct (id){
+   
+//     return {
+//         product:data
+//     }
+//     }
 
 function mapStateToProps(state, ownProps){
-    console.log("id",ownProps.match.params.id)
-    console.log("products",state.products)
-    const product = state.products.filter((prod) => prod.id.toString() === `${ownProps.match.params.id}`)[0]
-    console.log("product",product)
-    // console.log(typeof(ownProps.match.params.id))
+    var id =ownProps.match.params.id
     return{
         cart:state.cart,
-        product
+        id,
     }
+    
+    // console.log("product",product)
+    // console.log("id",id)
+    // // console.log(typeof(ownProps.match.params.id))
+    
 }
 
 function mapDispatchToProps(dispatch) {

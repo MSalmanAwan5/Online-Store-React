@@ -46,7 +46,6 @@ class ProductListing extends React.Component
         this.setCurrentIndex(this.state.currentPage-1)
     }
     fetchProducts = (currentPage)=>{
-        // console.log(currentPage)
         const {loadProducts} = this.props;
         var base_url = 'https://msalman.pythonanywhere.com'
 
@@ -60,17 +59,15 @@ class ProductListing extends React.Component
             
             //ignore for now
         }
-        // console.log(data)
 
         if(data===null){
             axios(`${base_url}/products/api/products/?page=${currentPage}`)
             .then(result=>{
                 data = result.data
-                console.log("pagesCount",data.results.length)
+                
                 if(currentPage === 1){
                     this.setState({pagesCount:Math.ceil(data.count/data.results.length)},()=>{
                     sessionStorage.setItem(`pagesCount`,this.state.pagesCount)
-                    console.log("pagesCoutn",this.state.pagesCount)
                     })
                 }
                 loadProducts(data.results)
@@ -97,7 +94,6 @@ class ProductListing extends React.Component
     
     componentDidMount()
     {
-        
         const currentPage = sessionStorage.getItem('currentPage');
         const pagesCount = sessionStorage.getItem('pagesCount');
         this.setState({pagesCount:parseInt(pagesCount)},()=>{
@@ -110,7 +106,6 @@ class ProductListing extends React.Component
     }
     render()
     {
-        // return <div>p</div>
         const {products,addToCart, removeFromCart, cart}=this.props
         return (
         <Container>
